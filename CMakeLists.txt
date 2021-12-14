@@ -5274,6 +5274,7 @@ SET(AARCH32_ASM_MICROKERNEL_SRCS
   src/f32-igemm/gen/4x8-minmax-aarch32-neon-pld-cortex-a75.S
   src/qs8-gemm/gen/4x8-minmax-rndnu-aarch32-neon-mlal-lane-ld64.S
   src/qs8-gemm/gen/4x8-minmax-rndnu-aarch32-neon-mlal-lane-prfm-ld64.S
+  src/qs8-gemm/gen/4x8c4-minmax-rndnu-aarch32-neondot-cortex-a55.S
   src/qs8-gemm/gen/4x8c4-minmax-rndnu-aarch32-neondot-ld64.S)
 
 SET(AARCH64_ASM_MICROKERNEL_SRCS

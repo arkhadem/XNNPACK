@@ -623,6 +623,7 @@ tools/xngen src/qs8-gemm/4x8-aarch32-neon-mlal-lane-ld64.S.in   -D PREFETCH=1 -D
 
 ### C4 micro-kernels
 tools/xngen src/qs8-gemm/4x8c4-aarch32-neondot-ld64.S.in -D REQUANTIZATION=RNDNU -D CHANNELWISE=0 -o src/qs8-gemm/gen/4x8c4-minmax-rndnu-aarch32-neondot-ld64.S &
+tools/xngen src/qs8-gemm/4x8c4-aarch32-neondot-cortex-a55.S.in -D REQUANTIZATION=RNDNU -D CHANNELWISE=0 -o src/qs8-gemm/gen/4x8c4-minmax-rndnu-aarch32-neondot-cortex-a55.S &
 
 ############################### AArch64 assembly ##############################
 ### Cortex-A53 lane micro-kernels
