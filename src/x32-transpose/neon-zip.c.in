@@ -1,0 +1,231 @@
+// Copyright 2021 Google LLC
+//
+// This source code is licensed under the BSD-style license found in the
+// LICENSE file in the root directory of this source tree.
+
+$import math
+$assert SIZE in [8, 16, 32, 64]
+$assert ARCH in ["neon", "aarch64_neon"]
+$TILE_SIZE=int(128/SIZE)
+$NUM_ITER = int(math.log2(TILE_SIZE))
+
+#include <arm_neon.h>
+
+#include <assert.h>
+
+#include <xnnpack/common.h>
+#include <xnnpack/math.h>
+#include <xnnpack/transpose.h>
+
+
+void xnn_x${SIZE}_transpose_ukernel__${TILE_SIZE}x${TILE_SIZE}_${ARCH}_zip(
+    const uint${SIZE}_t *input,
+    uint${SIZE}_t * output,
+    size_t input_stride,
+    size_t output_stride,
+    size_t block_width,
+    size_t block_height)
+{
+  assert(output_stride >= block_height * sizeof(uint${SIZE}_t));
+  assert(input_stride >= block_width * sizeof(uint${SIZE}_t));
+
+  const size_t tile_height = ${TILE_SIZE};
+  const size_t tile_width = ${TILE_SIZE};
+  const size_t tile_hbytes = tile_height * sizeof(uint${SIZE}_t);
+  const size_t tile_wbytes = tile_width * sizeof(uint${SIZE}_t);
+  $if SIZE >= 32:
+    const size_t input_reset = tile_wbytes - round_down_po2(block_height, tile_height) * input_stride;
+  $else:
+    const size_t input_reset = tile_wbytes - (block_height - ((block_height % tile_height) != 0)) * input_stride;
+  const size_t output_reset = tile_width * output_stride - round_down_po2(block_height, 2) * sizeof(uint${SIZE}_t);
+  $if SIZE >= 32:
+    const size_t input_offset = tile_height * input_stride;
+
+  const uint${SIZE}_t* i0 = input;
+  $if SIZE >= 32:
+    $for N in range(1, TILE_SIZE):
+      const uint${SIZE}_t* i${N} = (const uint${SIZE}_t*) ((uintptr_t) i${N-1} + input_stride);
+
+  uint${SIZE}_t* o0 = (uint${SIZE}_t*) output;
+  $if SIZE >= 32:
+    $for N in range(1, TILE_SIZE):
+      uint${SIZE}_t* o${N} = (uint${SIZE}_t*) ((uintptr_t) o${N-1} + output_stride);
+
+  do {
+    $if SIZE >= 32:
+      if XNN_UNPREDICTABLE(block_width < 2) {
+        o1 = o0;
+      }
+      $for N in range(2, TILE_SIZE, 2):
+        if XNN_UNPREDICTABLE(block_width <= ${N}) {
+          o${N} = o0;
+        }
+        if XNN_UNPREDICTABLE(block_width < ${N+2}) {
+          o${N+1} = o0;
+        }
+    size_t bh = block_height;
+    for (; bh >= ${TILE_SIZE}; bh -= ${TILE_SIZE}) {
+      $for N in range(TILE_SIZE):
+        $if SIZE >= 32:
+          uint${SIZE}x${TILE_SIZE}_t v${NUM_ITER}_${N} = vld1q_u${SIZE}(i${N}); i${N} = (uint${SIZE}_t*) ((uintptr_t) i${N} + input_offset);
+        $else:
+          uint${SIZE}x${TILE_SIZE}_t v${NUM_ITER}_${N} = vld1q_u${SIZE}(i0); i0 = (uint${SIZE}_t*) ((uintptr_t) i0 + input_stride);
+
+      $if SIZE == 64:
+        uint64x2x2_t v0_0;
+        $if ARCH == "aarch64_neon":
+          v0_0.val[0] = vtrn1q_u64(v1_0, v1_1);
+          v0_0.val[1] = vtrn2q_u64(v1_0, v1_1);
+        $else:
+          v0_0.val[0] = vcombine_u64(vget_low_u64(v1_0), vget_low_u64(v1_1));
+          v0_0.val[1] = vcombine_u64(vget_high_u64(v1_0), vget_high_u64(v1_1));
+      $else:
+        $for N in range(TILE_SIZE >> 1):
+            const uint${SIZE}x${TILE_SIZE}x2_t v${NUM_ITER-1}_${N} = vzipq_u${SIZE}(v${NUM_ITER}_${N}, v${NUM_ITER}_${N+(TILE_SIZE>>1)});
+
+      $for M in range(1,NUM_ITER,1):
+        $for N in range(TILE_SIZE >> 1):
+          const uint${SIZE}x${TILE_SIZE}x2_t v${NUM_ITER-M-1}_${N} = vzipq_u${SIZE}(v${NUM_ITER-M}_${N>>1}.val[${N%2}], v${NUM_ITER-M}_${(N>>1)+int(TILE_SIZE/4)}.val[${N%2}]);
+
+      $if SIZE >= 32:
+        $for N in reversed(range(TILE_SIZE)):
+          vst1q_u${SIZE}(o${N}, v0_${N>>1}.val[${N%2}]); o${N} = (uint${SIZE}_t*) ((uintptr_t) o${N} + tile_hbytes);
+      $else:
+        size_t rem = min(block_width - 1, ${TILE_SIZE-1});
+        uint${SIZE}_t* o1 = (uint${SIZE}_t*) ((uintptr_t) o0 + rem * output_stride);
+        switch(rem) {
+        $for N in reversed(range(2, TILE_SIZE)):
+            case (${N}):
+              vst1q_u${SIZE}(o1, v0_${N>>1}.val[${N%2}]); o1 = (uint${SIZE}_t*) ((uintptr_t) o1 - output_stride);
+        case (1):
+          vst1q_u${SIZE}(o1, v0_0.val[1]);
+        }
+        vst1q_u${SIZE}(o0, v0_0.val[0]); o0 = (uint${SIZE}_t*) ((uintptr_t) o0 + tile_hbytes);
+    }
+
+    if (bh != 0) {
+      $if SIZE >= 32:
+        uint${SIZE}x${TILE_SIZE}_t v${NUM_ITER}_0 = vld1q_u${SIZE}(i0);
+        $for N in range(1, TILE_SIZE - 1):
+          if XNN_UNPREDICTABLE(bh < ${N+1}) {
+            i${N} = i0;
+          }
+          uint${SIZE}x${TILE_SIZE}_t v${NUM_ITER}_${N} = vld1q_u${SIZE}(i${N});
+      $else:
+        $for N in range(TILE_SIZE - 1):
+          uint${SIZE}x${TILE_SIZE}_t v${NUM_ITER}_${N} = vld1q_u${SIZE}(i0);
+          if XNN_UNPREDICTABLE(bh > ${N+1}) {
+            i0 = (uint${SIZE}_t*) ((uintptr_t) i0 + input_stride);
+          }
+      uint${SIZE}x${TILE_SIZE}_t v${NUM_ITER}_${TILE_SIZE-1} = vmovq_n_u${SIZE}(0);
+
+      $if SIZE == 64:
+        uint64x2x2_t v0_0;
+        $if ARCH == "aarch64_neon":
+          v0_0.val[0] = vtrn1q_u64(v1_0, v1_1);
+          v0_0.val[1] = vtrn2q_u64(v1_0, v1_1);
+        $else:
+          v0_0.val[0] = vcombine_u64(vget_low_u64(v1_0), vget_low_u64(v1_1));
+          v0_0.val[1] = vcombine_u64(vget_high_u64(v1_0), vget_high_u64(v1_1));
+      $else:
+        $for N in range(TILE_SIZE >> 1):
+            const uint${SIZE}x${TILE_SIZE}x2_t v${NUM_ITER-1}_${N} = vzipq_u${SIZE}(v${NUM_ITER}_${N}, v${NUM_ITER}_${N+(TILE_SIZE>>1)});
+
+      $for M in range(1,NUM_ITER,1):
+        $for N in range(TILE_SIZE >> 1):
+          const uint${SIZE}x${TILE_SIZE}x2_t v${NUM_ITER-M-1}_${N} = vzipq_u${SIZE}(v${NUM_ITER-M}_${N>>1}.val[${N%2}], v${NUM_ITER-M}_${(N>>1)+int(TILE_SIZE/4)}.val[${N%2}]);
+
+      $for N in range(TILE_SIZE):
+        uint${SIZE}x${TILE_SIZE>>1}_t v${N}_low = vget_low_u${SIZE}(v0_${N>>1}.val[${N%2}]);
+
+      $if SIZE < 32:
+        size_t rem = min(block_width - 1, ${TILE_SIZE-1});
+      if (bh & ${TILE_SIZE>>1}) {
+        $if SIZE >= 32:
+          $for N in reversed(range(TILE_SIZE)):
+            $if SIZE == 64:
+              vst1_u${SIZE}(o${N}, v${N}_low);
+            $else:
+              vst1_u${SIZE}(o${N}, v${N}_low); o${N} += ${TILE_SIZE>>1};
+        $else:
+          uint${SIZE}_t* o1 = (uint${SIZE}_t*) ((uintptr_t) o0 + rem * output_stride);
+          switch(rem) {
+          $for N in reversed(range(2, TILE_SIZE)):
+              case (${N}):
+                vst1_u${SIZE}(o1, v${N}_low); o1 = (uint${SIZE}_t*) ((uintptr_t) o1 - output_stride);
+          case (1):
+            vst1_u${SIZE}(o1, v1_low);
+          }
+          vst1_u${SIZE}(o0, v0_low); o0 += ${TILE_SIZE>>1};
+        $if SIZE != 64:
+          $for N in range(TILE_SIZE):
+            v${N}_low = vget_high_u${SIZE}(v0_${N>>1}.val[${N%2}]);
+      }
+
+      $if SIZE <= 32:
+        if (bh & ${TILE_SIZE>>2}) {
+          $if SIZE == 32:
+            $for N in reversed(range(TILE_SIZE)):
+              vst1_lane_u32(o${N}, v${N}_low, 0);
+          $else:
+            uint${SIZE}_t* o1 = (uint${SIZE}_t*) ((uintptr_t) o0 + rem * output_stride);
+            switch(rem) {
+            $for N in reversed(range(2, TILE_SIZE)):
+                case (${N}):
+                  vst1_lane_u32((void*) o1, vreinterpret_u32_u${SIZE}(v${N}_low), 0); o1 = (uint${SIZE}_t*) ((uintptr_t) o1 - output_stride);
+            case (1):
+              vst1_lane_u32((void*) o1, vreinterpret_u32_u${SIZE}(v1_low), 0);
+            }
+            vst1_lane_u32((void*) o0, vreinterpret_u32_u${SIZE}(v0_low), 0); o0 += ${TILE_SIZE>>2};
+            $for N in range(TILE_SIZE):
+              v${N}_low = vreinterpret_u${SIZE}_u64(vshr_n_u64(vreinterpret_u64_u${SIZE}(v${N}_low), 32));
+        }
+      $if SIZE <= 16:
+        if (bh & ${TILE_SIZE>>3}) {
+          uint${SIZE}_t* o1 = (uint${SIZE}_t*) ((uintptr_t) o0 + rem * output_stride);
+          switch(rem) {
+          $for N in reversed(range(2, TILE_SIZE)):
+              case (${N}):
+                $if SIZE == 16:
+                  vst1_lane_u16(o1, v${N}_low, 0); o1 = (uint${SIZE}_t*) ((uintptr_t) o1 - output_stride);
+                $else:
+                  vst1_lane_u16((void*) o1, vreinterpret_u16_u8(v${N}_low), 0); o1 = (uint${SIZE}_t*) ((uintptr_t) o1 - output_stride);
+          case (1):
+            $if SIZE == 16:
+              vst1_lane_u16(o1, v1_low, 0);
+            $else:
+              vst1_lane_u16((void*) o1, vreinterpret_u16_u8(v1_low), 0);
+          }
+          $if SIZE == 16:
+            vst1_lane_u16(o0, v0_low, 0);
+          $else:
+            vst1_lane_u16((void*) o0, vreinterpret_u16_u8(v0_low), 0); o0 += ${TILE_SIZE>>3};
+          $if SIZE != 16:
+            $for N in range(TILE_SIZE):
+              v${N}_low = vreinterpret_u${SIZE}_u64(vshr_n_u64(vreinterpret_u64_u${SIZE}(v${N}_low), 16));
+        }
+      $if SIZE == 8:
+        if (bh & 1) {
+          uint${SIZE}_t* o1 = (uint${SIZE}_t*) ((uintptr_t) o0 + rem * output_stride);
+          switch(rem) {
+          $for N in reversed(range(2, TILE_SIZE)):
+              case (${N}):
+                vst1_lane_u8(o1, v${N}_low, 0); o1 = (uint${SIZE}_t*) ((uintptr_t) o1 - output_stride);
+          case (1):
+            vst1_lane_u8(o1, v1_low, 0);
+          }
+          vst1_lane_u8(o0, v0_low, 0);
+        }
+    }
+
+    i0 = (const uint${SIZE}_t*) ((uintptr_t) i0 + input_reset);
+    $if SIZE >= 32:
+      $for N in range(1, TILE_SIZE):
+        i${N} = (const uint${SIZE}_t*) ((uintptr_t) i${N-1} + input_stride);
+    o0 = (uint${SIZE}_t*) ((uintptr_t) o0 + output_reset);
+    $if SIZE >= 32:
+      $for N in range(1, TILE_SIZE):
+        o${N} = (uint${SIZE}_t*) ((uintptr_t) o${N} + output_reset);
+    block_width = doz(block_width, tile_width);
+  } while (block_width != 0);
+}

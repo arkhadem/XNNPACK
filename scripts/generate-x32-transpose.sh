@@ -22,6 +22,17 @@ tools/xngen src/x32-transpose/scalar.c.in -D TILE_HEIGHT=4 TILE_WIDTH=1 TYPE=flo
 tools/xngen src/x32-transpose/scalar.c.in -D TILE_HEIGHT=4 TILE_WIDTH=2 TYPE=float SIZE=32 -o src/x32-transpose/gen/4x2-scalar-float.c &
 tools/xngen src/x32-transpose/scalar.c.in -D TILE_HEIGHT=4 TILE_WIDTH=4 TYPE=float SIZE=32 -o src/x32-transpose/gen/4x4-scalar-float.c &
 
+#################################### SSE2 ###################################
+tools/xngen src/x32-transpose/sse2.c.in -D IN_PTRS=REUSE OUT_PTRS=DEC SIZE=32 -o src/x32-transpose/gen/4x4-reuse-dec-sse2.c &
+tools/xngen src/x32-transpose/sse2.c.in -D IN_PTRS=REUSE OUT_PTRS=SWITCH SIZE=32 -o src/x32-transpose/gen/4x4-reuse-switch-sse2.c &
+tools/xngen src/x32-transpose/sse2.c.in -D IN_PTRS=REUSE OUT_PTRS=MULTI SIZE=32 -o src/x32-transpose/gen/4x4-reuse-multi-sse2.c &
+tools/xngen src/x32-transpose/sse2.c.in -D IN_PTRS=MULTI OUT_PTRS=SWITCH SIZE=32 -o src/x32-transpose/gen/4x4-multi-switch-sse2.c &
+tools/xngen src/x32-transpose/sse2.c.in -D IN_PTRS=MULTI OUT_PTRS=MULTI SIZE=32 -o src/x32-transpose/gen/4x4-multi-multi-sse2.c &
+tools/xngen src/x32-transpose/sse2.c.in -D IN_PTRS=MULTI OUT_PTRS=DEC SIZE=32 -o src/x32-transpose/gen/4x4-multi-dec-sse2.c &
+
+#################################### ARM NEON ###############################
+tools/xngen src/x32-transpose/neon-zip.c.in -D SIZE=32 ARCH=neon -o src/x32-transpose/gen/4x4-neon-zip.c &
+
 ################################## Unit tests #################################
 tools/generate-transpose-test.py --spec test/x32-transpose.yaml --output=test/x32-transpose.cc &
 

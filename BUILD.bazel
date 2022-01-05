@@ -3707,6 +3707,10 @@ ALL_NEON_MICROKERNEL_SRCS = [
     "src/x32-zip/x3-neon.c",
     "src/x32-zip/x4-neon.c",
     "src/x32-zip/xm-neon.c",
+    "src/x8-transpose/gen/16x16-neon-zip.c",
+    "src/x16-transpose/gen/8x8-neon-zip.c",
+    "src/x32-transpose/gen/4x4-neon-zip.c",
+    "src/x64-transpose/gen/2x2-neon-zip.c",
     "src/xx-fill/neon-x64.c",
     "src/xx-pad/neon.c",
 ]
@@ -4106,6 +4110,7 @@ ALL_AARCH64_NEON_MICROKERNEL_SRCS = [
     "src/x8-lut/gen/lut-neon-tbx128x4-x48.c",
     "src/x8-lut/gen/lut-neon-tbx128x4-x64.c",
     "src/x32-transpose/4x4-aarch64-tbl.c",
+    "src/x64-transpose/gen/2x2-aarch64-zip.c",
 ]
 
 PROD_NEONV8_MICROKERNEL_SRCS = [
@@ -5145,16 +5150,35 @@ ALL_SSE2_MICROKERNEL_SRCS = [
     "src/u8-maxpool/9p8x-minmax-sse2-c16.c",
     "src/u8-rmax/sse2.c",
     "src/u8-vclamp/sse2-x64.c",
+    "src/x8-transpose/gen/16x16-reuse-dec-sse2.c",
+    "src/x8-transpose/gen/16x16-reuse-switch-sse2.c",
     "src/x8-zip/x2-sse2.c",
     "src/x8-zip/x3-sse2.c",
     "src/x8-zip/x4-sse2.c",
     "src/x8-zip/xm-sse2.c",
     "src/x16-transpose/4x8-sse2.c",
+    "src/x16-transpose/gen/8x8-multi-dec-sse2.c",
+    "src/x16-transpose/gen/8x8-multi-switch-sse2.c",
+    "src/x16-transpose/gen/8x8-reuse-dec-sse2.c",
+    "src/x16-transpose/gen/8x8-reuse-multi-sse2.c",
+    "src/x16-transpose/gen/8x8-reuse-switch-sse2.c",
+    "src/x32-transpose/gen/4x4-multi-dec-sse2.c",
+    "src/x32-transpose/gen/4x4-multi-multi-sse2.c",
+    "src/x32-transpose/gen/4x4-multi-switch-sse2.c",
+    "src/x32-transpose/gen/4x4-reuse-dec-sse2.c",
+    "src/x32-transpose/gen/4x4-reuse-multi-sse2.c",
+    "src/x32-transpose/gen/4x4-reuse-switch-sse2.c",
     "src/x32-unpool/sse2.c",
     "src/x32-zip/x2-sse2.c",
     "src/x32-zip/x3-sse2.c",
     "src/x32-zip/x4-sse2.c",
     "src/x32-zip/xm-sse2.c",
+    "src/x64-transpose/gen/2x2-multi-dec-sse2.c",
+    "src/x64-transpose/gen/2x2-multi-multi-sse2.c",
+    "src/x64-transpose/gen/2x2-multi-switch-sse2.c",
+    "src/x64-transpose/gen/2x2-reuse-dec-sse2.c",
+    "src/x64-transpose/gen/2x2-reuse-multi-sse2.c",
+    "src/x64-transpose/gen/2x2-reuse-switch-sse2.c",
     "src/xx-fill/sse2-x64.c",
     "src/xx-pad/sse2.c",
 ]
@@ -12039,6 +12063,15 @@ xnnpack_unit_test(
 )
 
 xnnpack_unit_test(
+    name = "x8_transpose_test",
+    srcs = [
+        "test/x8-transpose.cc",
+        "test/transpose-microkernel-tester.h",
+    ] + MICROKERNEL_TEST_HDRS,
+    deps = MICROKERNEL_TEST_DEPS,
+)
+
+xnnpack_unit_test(
     name = "x16_transpose_test",
     srcs = [
         "test/x16-transpose.cc",
@@ -12051,6 +12084,15 @@ xnnpack_unit_test(
     name = "x32_transpose_test",
     srcs = [
         "test/x32-transpose.cc",
+        "test/transpose-microkernel-tester.h",
+    ] + MICROKERNEL_TEST_HDRS,
+    deps = MICROKERNEL_TEST_DEPS,
+)
+
+xnnpack_unit_test(
+    name = "x64_transpose_test",
+    srcs = [
+        "test/x64-transpose.cc",
         "test/transpose-microkernel-tester.h",
     ] + MICROKERNEL_TEST_HDRS,
     deps = MICROKERNEL_TEST_DEPS,
