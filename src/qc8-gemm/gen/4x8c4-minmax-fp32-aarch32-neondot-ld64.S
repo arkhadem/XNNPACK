@@ -47,6 +47,7 @@
 //    int8_t output_max;          d13[7]
 //  } xnn_qs8_minmax_params.neonv8;
 
+#ifndef __APPLE__
 BEGIN_FUNCTION xnn_qc8_gemm_minmax_fp32_ukernel_4x8c4__aarch32_neondot_ld64
         # Push 80 bytes
         PUSH    {r4, r5, r6, r7, r8, r9, r10, r11}  // 32
@@ -267,6 +268,7 @@ BEGIN_FUNCTION xnn_qc8_gemm_minmax_fp32_ukernel_4x8c4__aarch32_neondot_ld64
         BX      lr
 
 END_FUNCTION xnn_qc8_gemm_minmax_fp32_ukernel_4x8c4__aarch32_neondot_ld64
+#endif  // __APPLE__
 
 #ifdef __ELF__
 .section ".note.GNU-stack","",%progbits
