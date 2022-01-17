@@ -13,6 +13,7 @@
 
 #include <xnnpack/spmm.h>
 
+#include <stdio.h>
 
 void xnn_f32_spmm_minmax_ukernel_32x1__sse(
     size_t mc,
@@ -28,6 +29,8 @@ void xnn_f32_spmm_minmax_ukernel_32x1__sse(
   assert(mc != 0);
   assert(mc % sizeof(float) == 0);
   assert(nc != 0);
+
+  // printf("mc(%d), nc(%d), input(%f, %f, %f, %f), weights(%f, %f, %f, %f)\n", (int)mc, (int)nc, input[0], input[1], input[2], input[3], weights[0], weights[1], weights[2], weights[3]);
 
   const __m128 vmin = _mm_load_ps(params->sse.min);
   const __m128 vmax = _mm_load_ps(params->sse.max);
