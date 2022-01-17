@@ -6,9 +6,11 @@
 #include <algorithm>
 #include <cfloat>
 #include <cmath>
+#include <cstdio>
 #include <functional>
 #include <random>
 #include <vector>
+#include <stdio.h>
 
 #include <benchmark/benchmark.h>
 #include "bench/spmm.h"
@@ -62,6 +64,9 @@ static void SpMMBenchmark(benchmark::State& state,
 
   std::vector<size_t> a_offsets(num_buffers);
 
+  // printf("mc(%d), nc(%d), kc(%d), mr(%d), nr(%d), w_elements(%d), c_elements(%d), dmap_elements(%d), nmap_elements(%d), num_buffers(%d)\n", (int)mc, (int)nc, (int)kc, (int)mr, (int)nr, (int)w_elements, (int)c_elements, (int)dmap_elements, (int)nmap_elements, (int)num_buffers);
+  // printf("iterations(%d), threads(%d)\n", (int)state.iterations(), (int)state.threads);
+  // printf("max_cache(%d), total_size(%d)\n", (int)benchmark::utils::GetMaxCacheSize(), (int)(sizeof(float) * (w_elements + c_elements) + sizeof(uint32_t) * (dmap_elements + nmap_elements)));
   for (size_t buffer_index = 0; buffer_index < num_buffers; buffer_index++) {
     // Re-generate weights. Note: each re-generation produces the number of non-zeroes.
     std::fill(b.begin(), b.begin() + sparse_end, 0.0f);
@@ -364,9 +369,9 @@ static void SpMMBenchmark(benchmark::State& state,
     SpMMBenchmark(state, xnn_f32_spmm_minmax_ukernel_32x1__sse, 32, 1, 0.8f);
   }
 
-  BENCHMARK_SPMM(spmm80_4x1__sse)
-  BENCHMARK_SPMM(spmm80_8x1__sse)
-  BENCHMARK_SPMM(spmm80_16x1__sse)
+  // BENCHMARK_SPMM(spmm80_4x1__sse)
+  // BENCHMARK_SPMM(spmm80_8x1__sse)
+  // BENCHMARK_SPMM(spmm80_16x1__sse)
   BENCHMARK_SPMM(spmm80_32x1__sse)
 #endif  // XNN_ARCH_X86 || XNN_ARCH_X86_64
 
@@ -410,16 +415,16 @@ static void spmm80_8x1__scalar_pipelined(benchmark::State& state, const char* ne
   SpMMBenchmark(state, xnn_f32_spmm_minmax_ukernel_8x1__scalar_pipelined, 8, 1, 0.8f);
 }
 
-BENCHMARK_SPMM(spmm80_1x1__scalar)
-BENCHMARK_SPMM(spmm80_2x1__scalar)
-BENCHMARK_SPMM(spmm80_4x1__scalar)
-BENCHMARK_SPMM(spmm80_8x1__scalar)
-BENCHMARK_SPMM(spmm80_8x2__scalar)
-BENCHMARK_SPMM(spmm80_8x4__scalar)
-BENCHMARK_SPMM(spmm80_1x1__scalar_pipelined)
-BENCHMARK_SPMM(spmm80_2x1__scalar_pipelined)
-BENCHMARK_SPMM(spmm80_4x1__scalar_pipelined)
-BENCHMARK_SPMM(spmm80_8x1__scalar_pipelined)
+// BENCHMARK_SPMM(spmm80_1x1__scalar)
+// BENCHMARK_SPMM(spmm80_2x1__scalar)
+// BENCHMARK_SPMM(spmm80_4x1__scalar)
+// BENCHMARK_SPMM(spmm80_8x1__scalar)
+// BENCHMARK_SPMM(spmm80_8x2__scalar)
+// BENCHMARK_SPMM(spmm80_8x4__scalar)
+// BENCHMARK_SPMM(spmm80_1x1__scalar_pipelined)
+// BENCHMARK_SPMM(spmm80_2x1__scalar_pipelined)
+// BENCHMARK_SPMM(spmm80_4x1__scalar_pipelined)
+// BENCHMARK_SPMM(spmm80_8x1__scalar_pipelined)
 
 #if XNN_ARCH_WASMSIMD || XNN_ARCH_WASMRELAXEDSIMD
   static void spmm80_4x1__wasmsimd_arm(benchmark::State& state, const char* net) {
