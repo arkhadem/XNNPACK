@@ -14,6 +14,7 @@
 
 
 // Define architecture identification macros
+#define XNN_ARCH_GPIC 1
 
 #if defined(__i386__) || defined(__i486__) || defined(__i586__) || defined(__i686__) || defined(_M_IX86)
   #define XNN_ARCH_X86 1

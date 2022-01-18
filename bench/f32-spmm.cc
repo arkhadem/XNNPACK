@@ -372,8 +372,15 @@ static void SpMMBenchmark(benchmark::State& state,
   // BENCHMARK_SPMM(spmm80_4x1__sse)
   // BENCHMARK_SPMM(spmm80_8x1__sse)
   // BENCHMARK_SPMM(spmm80_16x1__sse)
-  BENCHMARK_SPMM(spmm80_32x1__sse)
+  // BENCHMARK_SPMM(spmm80_32x1__sse)
 #endif  // XNN_ARCH_X86 || XNN_ARCH_X86_64
+
+#if XNN_ARCH_GPIC
+  static void spmm80_256x1__sse(benchmark::State& state, const char* net) {
+    SpMMBenchmark(state, xnn_f32_spmm_minmax_ukernel_256x1__gpic, 256, 1, 0.8f);
+  }
+  BENCHMARK_SPMM(spmm80_256x1__sse)
+#endif
 
 static void spmm80_1x1__scalar(benchmark::State& state, const char* net) {
   SpMMBenchmark(state, xnn_f32_spmm_minmax_ukernel_1x1__scalar, 1, 1, 0.8f);
