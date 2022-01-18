@@ -63,8 +63,12 @@ IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   ADD_COMPILE_OPTIONS("-Wno-psabi")
 ENDIF()
 
-link_libraries(gpic)
-ADD_COMPILE_OPTIONS("-lgpic")
+# link_libraries(gpic)
+# ADD_COMPILE_OPTIONS("-lgpic")
+IF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  include_directories(/Library/Developer/CommandLineTools/usr/include/)
+  link_directories(/Library/Developer/CommandLineTools/usr/lib/)
+ENDIF()
 
 # ---[ Build flags
 IF(NOT CMAKE_SYSTEM_PROCESSOR)
@@ -6524,7 +6528,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-f32-vcvt-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-f32-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-f32-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-f32-vcvt-test f16-f32-vcvt-test)
 
   ADD_EXECUTABLE(f16-dwconv-minmax-test test/f16-dwconv-minmax.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6533,7 +6537,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-dwconv-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-dwconv-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-dwconv-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-dwconv-minmax-test f16-dwconv-minmax-test)
 
   ADD_EXECUTABLE(f16-gavgpool-minmax-test test/f16-gavgpool-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6542,7 +6546,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-gavgpool-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-gavgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-gavgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-gavgpool-minmax-test f16-gavgpool-minmax-test)
 
   ADD_EXECUTABLE(f16-gemm-minmax-test test/f16-gemm-minmax.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6551,7 +6555,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-gemm-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-gemm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-gemm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-gemm-minmax-test f16-gemm-minmax-test)
 
   ADD_EXECUTABLE(f16-igemm-minmax-test test/f16-igemm-minmax.cc $<TARGET_OBJECTS:all_microkernels>  $<TARGET_OBJECTS:packing>)
@@ -6560,7 +6564,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-igemm-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-igemm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-igemm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-igemm-minmax-test f16-igemm-minmax-test)
 
   ADD_EXECUTABLE(f16-spmm-minmax-test test/f16-spmm-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6569,7 +6573,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-spmm-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-spmm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-spmm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-spmm-minmax-test f16-spmm-minmax-test)
 
   ADD_EXECUTABLE(f16-vadd-minmax-test test/f16-vadd-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6578,7 +6582,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vadd-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vadd-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vadd-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vadd-minmax-test f16-vadd-minmax-test)
 
   ADD_EXECUTABLE(f16-vaddc-minmax-test test/f16-vaddc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6587,7 +6591,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vaddc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vaddc-minmax-test f16-vaddc-minmax-test)
 
   ADD_EXECUTABLE(f16-vclamp-test test/f16-vclamp.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6596,7 +6600,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vclamp-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vclamp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vclamp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vclamp-test f16-vclamp-test)
 
   ADD_EXECUTABLE(f16-vdiv-minmax-test test/f16-vdiv-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6605,7 +6609,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vdiv-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vdiv-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vdiv-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vdiv-minmax-test f16-vdiv-minmax-test)
 
   ADD_EXECUTABLE(f16-vdivc-minmax-test test/f16-vdivc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6614,7 +6618,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vdivc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vdivc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vdivc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vdivc-minmax-test f16-vdivc-minmax-test)
 
   ADD_EXECUTABLE(f16-vrdivc-minmax-test test/f16-vrdivc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6623,7 +6627,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vrdivc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vrdivc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vrdivc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vrdivc-minmax-test f16-vrdivc-minmax-test)
 
   ADD_EXECUTABLE(f16-vhswish-test test/f16-vhswish.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6632,7 +6636,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vhswish-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vhswish-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vhswish-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vhswish-test f16-vhswish-test)
 
   ADD_EXECUTABLE(f16-vmax-test test/f16-vmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6641,7 +6645,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vmax-test f16-vmax-test)
 
   ADD_EXECUTABLE(f16-vmaxc-test test/f16-vmaxc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6650,7 +6654,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vmaxc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vmaxc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vmaxc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vmaxc-test f16-vmaxc-test)
 
   ADD_EXECUTABLE(f16-vmin-test test/f16-vmin.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6659,7 +6663,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vmin-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vmin-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vmin-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vmin-test f16-vmin-test)
 
   ADD_EXECUTABLE(f16-vminc-test test/f16-vminc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6668,7 +6672,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vminc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vminc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vminc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vminc-test f16-vminc-test)
 
   ADD_EXECUTABLE(f16-vmul-minmax-test test/f16-vmul-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6677,7 +6681,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vmul-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vmul-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vmul-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vmul-minmax-test f16-vmul-minmax-test)
 
   ADD_EXECUTABLE(f16-vmulc-minmax-test test/f16-vmulc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6686,7 +6690,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vmulc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vmulc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vmulc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vmulc-minmax-test f16-vmulc-minmax-test)
 
   ADD_EXECUTABLE(f16-vmulcaddc-minmax-test test/f16-vmulcaddc-minmax.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6695,7 +6699,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vmulcaddc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vmulcaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vmulcaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vmulcaddc-minmax-test f16-vmulcaddc-minmax-test)
 
   ADD_EXECUTABLE(f16-prelu-test test/f16-prelu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6704,7 +6708,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-prelu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-prelu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-prelu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-prelu-test f16-prelu-test)
 
   ADD_EXECUTABLE(f16-vsub-minmax-test test/f16-vsub-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6713,7 +6717,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vsub-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vsub-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vsub-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vsub-minmax-test f16-vsub-minmax-test)
 
   ADD_EXECUTABLE(f16-vsubc-minmax-test test/f16-vsubc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6722,7 +6726,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vsubc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vsubc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vsubc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vsubc-minmax-test f16-vsubc-minmax-test)
 
   ADD_EXECUTABLE(f16-vrsubc-minmax-test test/f16-vrsubc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6731,7 +6735,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-vrsubc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f16-vrsubc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-vrsubc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f16-vrsubc-minmax-test f16-vrsubc-minmax-test)
 
   ADD_EXECUTABLE(f32-argmaxpool-test test/f32-argmaxpool.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6740,7 +6744,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-argmaxpool-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-argmaxpool-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-argmaxpool-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-argmaxpool-test f32-argmaxpool-test)
 
   ADD_EXECUTABLE(f32-avgpool-minmax-test test/f32-avgpool-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6749,7 +6753,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-avgpool-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-avgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-avgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-avgpool-minmax-test f32-avgpool-minmax-test)
 
   ADD_EXECUTABLE(f32-conv-hwc-test test/f32-conv-hwc.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6758,7 +6762,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-conv-hwc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-conv-hwc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-conv-hwc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-conv-hwc-test f32-conv-hwc-test)
 
   ADD_EXECUTABLE(f32-conv-hwc2chw-test test/f32-conv-hwc2chw.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6767,7 +6771,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-conv-hwc2chw-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-conv-hwc2chw-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-conv-hwc2chw-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-conv-hwc2chw-test f32-conv-hwc2chw-test)
 
   ADD_EXECUTABLE(f32-dwconv-test test/f32-dwconv.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6776,7 +6780,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-dwconv-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-dwconv-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-dwconv-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-dwconv-test f32-dwconv-test)
 
   ADD_EXECUTABLE(f32-dwconv2d-chw-test test/f32-dwconv2d-chw.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6785,7 +6789,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-dwconv2d-chw-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-dwconv2d-chw-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-dwconv2d-chw-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-dwconv2d-chw-test f32-dwconv2d-chw-test)
 
   ADD_EXECUTABLE(f32-dwconv-minmax-test test/f32-dwconv-minmax.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6794,7 +6798,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-dwconv-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-dwconv-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-dwconv-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-dwconv-minmax-test f32-dwconv-minmax-test)
 
   ADD_EXECUTABLE(f32-f16-vcvt-test test/f32-f16-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6803,7 +6807,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-f16-vcvt-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-f16-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-f16-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-f16-vcvt-test f32-f16-vcvt-test)
 
   ADD_EXECUTABLE(f32-qs8-vcvt-test test/f32-f16-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6812,7 +6816,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-qs8-vcvt-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-qs8-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-qs8-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-qs8-vcvt-test f32-qs8-vcvt-test)
 
   ADD_EXECUTABLE(f32-qu8-vcvt-test test/f32-f16-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6821,7 +6825,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-qu8-vcvt-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-qu8-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-qu8-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-qu8-vcvt-test f32-qu8-vcvt-test)
 
   ADD_EXECUTABLE(f32-gavgpool-cw-test test/f32-gavgpool-cw.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6830,7 +6834,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-gavgpool-cw-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-gavgpool-cw-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-gavgpool-cw-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-gavgpool-cw-test f32-gavgpool-cw-test)
 
   ADD_EXECUTABLE(f32-gavgpool-minmax-test test/f32-gavgpool-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6839,7 +6843,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-gavgpool-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-gavgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-gavgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-gavgpool-minmax-test f32-gavgpool-minmax-test)
 
   ADD_EXECUTABLE(f32-gemm-test test/f32-gemm.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6848,7 +6852,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-gemm-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-gemm-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-gemm-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-gemm-test f32-gemm-test)
 
   ADD_EXECUTABLE(f32-gemm-relu-test test/f32-gemm-relu.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6857,7 +6861,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-gemm-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-gemm-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-gemm-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-gemm-relu-test f32-gemm-relu-test)
 
   ADD_EXECUTABLE(f32-gemm-minmax-test test/f32-gemm-minmax.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6866,7 +6870,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-gemm-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-gemm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main jit)
+  TARGET_LINK_LIBRARIES(f32-gemm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main jit gpic)
   ADD_TEST(f32-gemm-minmax-test f32-gemm-minmax-test)
 
   ADD_EXECUTABLE(f32-gemminc-minmax-test test/f32-gemminc-minmax.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6875,7 +6879,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-gemminc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-gemminc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-gemminc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-gemminc-minmax-test f32-gemminc-minmax-test)
 
   ADD_EXECUTABLE(f32-ibilinear-test test/f32-ibilinear.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6884,7 +6888,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-ibilinear-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-ibilinear-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-ibilinear-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-ibilinear-test f32-ibilinear-test)
 
   ADD_EXECUTABLE(f32-ibilinear-chw-test test/f32-ibilinear-chw.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6893,7 +6897,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-ibilinear-chw-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-ibilinear-chw-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-ibilinear-chw-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-ibilinear-chw-test f32-ibilinear-chw-test)
 
   ADD_EXECUTABLE(f32-igemm-test test/f32-igemm.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6902,7 +6906,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-igemm-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-igemm-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-igemm-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-igemm-test f32-igemm-test)
 
   ADD_EXECUTABLE(f32-igemm-relu-test test/f32-igemm-relu.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6911,7 +6915,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-igemm-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-igemm-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-igemm-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-igemm-relu-test f32-igemm-relu-test)
 
   ADD_EXECUTABLE(f32-igemm-minmax-test test/f32-igemm-minmax.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6924,7 +6928,7 @@ IF(XNNPACK_BUILD_TESTS)
     # Work-around for "too many sections" error
     TARGET_COMPILE_OPTIONS(f32-igemm-minmax-test PRIVATE "$<$<NOT:$<OR:$<CONFIG:Release>,$<CONFIG:MinSizeRel>>>:-Wa,-mbig-obj>")
   ENDIF()
-  TARGET_LINK_LIBRARIES(f32-igemm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main jit)
+  TARGET_LINK_LIBRARIES(f32-igemm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main jit gpic)
   ADD_TEST(f32-igemm-minmax-test f32-igemm-minmax-test)
 
   ADD_EXECUTABLE(f32-maxpool-minmax-test test/f32-maxpool-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6933,7 +6937,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-maxpool-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-maxpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-maxpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-maxpool-minmax-test f32-maxpool-minmax-test)
 
   ADD_EXECUTABLE(f32-pavgpool-minmax-test test/f32-pavgpool-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6942,7 +6946,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-pavgpool-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-pavgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-pavgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-pavgpool-minmax-test f32-pavgpool-minmax-test)
 
   ADD_EXECUTABLE(f32-ppmm-minmax-test test/f32-ppmm-minmax.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -6951,7 +6955,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-ppmm-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-ppmm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-ppmm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-ppmm-minmax-test f32-ppmm-minmax-test)
 
   ADD_EXECUTABLE(f32-prelu-test test/f32-prelu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6960,7 +6964,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-prelu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-prelu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-prelu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-prelu-test f32-prelu-test)
 
   ADD_EXECUTABLE(f32-raddexpminusmax-test test/f32-raddexpminusmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6969,7 +6973,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-raddexpminusmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-raddexpminusmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-raddexpminusmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-raddexpminusmax-test f32-raddexpminusmax-test)
 
   ADD_EXECUTABLE(f32-raddextexp-test test/f32-raddextexp.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6978,7 +6982,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-raddextexp-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-raddextexp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-raddextexp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-raddextexp-test f32-raddextexp-test)
 
   ADD_EXECUTABLE(f32-raddstoreexpminusmax-test test/f32-raddstoreexpminusmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6987,7 +6991,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-raddstoreexpminusmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-raddstoreexpminusmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-raddstoreexpminusmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-raddstoreexpminusmax-test f32-raddstoreexpminusmax-test)
 
   ADD_EXECUTABLE(f32-rmax-test test/f32-rmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -6996,7 +7000,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-rmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-rmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-rmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-rmax-test f32-rmax-test)
 
   ADD_EXECUTABLE(f32-spmm-minmax-test test/f32-spmm-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7005,7 +7009,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-spmm-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-spmm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-spmm-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-spmm-minmax-test f32-spmm-minmax-test)
 
   ADD_EXECUTABLE(f32-vabs-test test/f32-vabs.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7014,7 +7018,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vabs-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vabs-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vabs-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vabs-test f32-vabs-test)
 
   ADD_EXECUTABLE(f32-vadd-test test/f32-vadd.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7023,7 +7027,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vadd-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vadd-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vadd-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vadd-test f32-vadd-test)
 
   ADD_EXECUTABLE(f32-vadd-minmax-test test/f32-vadd-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7032,7 +7036,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vadd-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vadd-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vadd-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vadd-minmax-test f32-vadd-minmax-test)
 
   ADD_EXECUTABLE(f32-vadd-relu-test test/f32-vadd-relu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7041,7 +7045,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vadd-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vadd-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vadd-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vadd-relu-test f32-vadd-relu-test)
 
   ADD_EXECUTABLE(f32-vaddc-test test/f32-vaddc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7050,7 +7054,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vaddc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vaddc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vaddc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vaddc-test f32-vaddc-test)
 
   ADD_EXECUTABLE(f32-vaddc-minmax-test test/f32-vaddc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7059,7 +7063,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vaddc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vaddc-minmax-test f32-vaddc-minmax-test)
 
   ADD_EXECUTABLE(f32-vaddc-relu-test test/f32-vaddc-relu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7068,7 +7072,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vaddc-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vaddc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vaddc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vaddc-relu-test f32-vaddc-relu-test)
 
   ADD_EXECUTABLE(f32-vclamp-test test/f32-vclamp.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7077,7 +7081,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vclamp-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vclamp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vclamp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vclamp-test f32-vclamp-test)
 
   ADD_EXECUTABLE(f32-vhswish-test test/f32-vhswish.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7086,7 +7090,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vhswish-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vhswish-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vhswish-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vhswish-test f32-vhswish-test)
 
   ADD_EXECUTABLE(f32-vdiv-test test/f32-vdiv.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7095,7 +7099,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vdiv-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vdiv-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vdiv-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vdiv-test f32-vdiv-test)
 
   ADD_EXECUTABLE(f32-vdiv-minmax-test test/f32-vdiv-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7104,7 +7108,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vdiv-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vdiv-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vdiv-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vdiv-minmax-test f32-vdiv-minmax-test)
 
   ADD_EXECUTABLE(f32-vdiv-relu-test test/f32-vdiv-relu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7113,7 +7117,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vdiv-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vdiv-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vdiv-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vdiv-relu-test f32-vdiv-relu-test)
 
   ADD_EXECUTABLE(f32-vdivc-test test/f32-vdivc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7122,7 +7126,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vdivc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vdivc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vdivc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vdivc-test f32-vdivc-test)
 
   ADD_EXECUTABLE(f32-vdivc-minmax-test test/f32-vdivc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7131,7 +7135,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vdivc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vdivc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vdivc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vdivc-minmax-test f32-vdivc-minmax-test)
 
   ADD_EXECUTABLE(f32-vdivc-relu-test test/f32-vdivc-relu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7140,7 +7144,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vdivc-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vdivc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vdivc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vdivc-relu-test f32-vdivc-relu-test)
 
   ADD_EXECUTABLE(f32-vrdivc-test test/f32-vrdivc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7149,7 +7153,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrdivc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrdivc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrdivc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrdivc-test f32-vrdivc-test)
 
   ADD_EXECUTABLE(f32-vrdivc-minmax-test test/f32-vrdivc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7158,7 +7162,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrdivc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrdivc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrdivc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrdivc-minmax-test f32-vrdivc-minmax-test)
 
   ADD_EXECUTABLE(f32-vrdivc-relu-test test/f32-vrdivc-relu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7167,7 +7171,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrdivc-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrdivc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrdivc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrdivc-relu-test f32-vrdivc-relu-test)
 
   ADD_EXECUTABLE(f32-velu-test test/f32-velu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7176,7 +7180,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-velu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-velu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-velu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-velu-test f32-velu-test)
 
   ADD_EXECUTABLE(f32-vlrelu-test test/f32-vlrelu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7185,7 +7189,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vlrelu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vlrelu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vlrelu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vlrelu-test f32-vlrelu-test)
 
   ADD_EXECUTABLE(f32-vmax-test test/f32-vmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7194,7 +7198,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vmax-test f32-vmax-test)
 
   ADD_EXECUTABLE(f32-vmaxc-test test/f32-vmaxc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7203,7 +7207,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vmaxc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vmaxc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vmaxc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vmaxc-test f32-vmaxc-test)
 
   ADD_EXECUTABLE(f32-vmin-test test/f32-vmin.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7212,7 +7216,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vmin-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vmin-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vmin-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vmin-test f32-vmin-test)
 
   ADD_EXECUTABLE(f32-vminc-test test/f32-vminc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7221,7 +7225,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vminc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vminc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vminc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vminc-test f32-vminc-test)
 
   ADD_EXECUTABLE(f32-vmul-test test/f32-vmul.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7230,7 +7234,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vmul-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vmul-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vmul-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vmul-test f32-vmul-test)
 
   ADD_EXECUTABLE(f32-vmul-minmax-test test/f32-vmul-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7239,7 +7243,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vmul-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vmul-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vmul-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vmul-minmax-test f32-vmul-minmax-test)
 
   ADD_EXECUTABLE(f32-vmul-relu-test test/f32-vmul-relu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7248,7 +7252,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vmul-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vmul-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vmul-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vmul-relu-test f32-vmul-relu-test)
 
   ADD_EXECUTABLE(f32-vmulc-test test/f32-vmulc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7257,7 +7261,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vmulc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vmulc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vmulc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vmulc-test f32-vmulc-test)
 
   ADD_EXECUTABLE(f32-vmulc-minmax-test test/f32-vmulc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7266,7 +7270,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vmulc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vmulc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vmulc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vmulc-minmax-test f32-vmulc-minmax-test)
 
   ADD_EXECUTABLE(f32-vmulc-relu-test test/f32-vmulc-relu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7275,7 +7279,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vmulc-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vmulc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vmulc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vmulc-relu-test f32-vmulc-relu-test)
 
   ADD_EXECUTABLE(f32-vmulcaddc-minmax-test test/f32-vmulcaddc-minmax.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7284,7 +7288,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vmulcaddc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vmulcaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vmulcaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vmulcaddc-minmax-test f32-vmulcaddc-minmax-test)
 
   ADD_EXECUTABLE(f32-vneg-test test/f32-vneg.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7293,7 +7297,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vneg-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vneg-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vneg-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vneg-test f32-vneg-test)
 
   ADD_EXECUTABLE(f32-vrelu-test test/f32-vrelu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7302,7 +7306,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrelu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrelu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrelu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrelu-test f32-vrelu-test)
 
   ADD_EXECUTABLE(f32-vrndne-test test/f32-vrndne.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7311,7 +7315,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrndne-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrndne-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrndne-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrndne-test f32-vrndne-test)
 
   ADD_EXECUTABLE(f32-vrndz-test test/f32-vrndz.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7320,7 +7324,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrndz-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrndz-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrndz-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrndz-test f32-vrndz-test)
 
   ADD_EXECUTABLE(f32-vrndu-test test/f32-vrndu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7329,7 +7333,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrndu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrndu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrndu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrndu-test f32-vrndu-test)
 
   ADD_EXECUTABLE(f32-vrndd-test test/f32-vrndd.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7338,7 +7342,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrndd-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrndd-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrndd-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrndd-test f32-vrndd-test)
 
   ADD_EXECUTABLE(f32-vscaleexpminusmax-test test/f32-vscaleexpminusmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7347,7 +7351,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vscaleexpminusmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vscaleexpminusmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vscaleexpminusmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vscaleexpminusmax-test f32-vscaleexpminusmax-test)
 
   ADD_EXECUTABLE(f32-vscaleextexp-test test/f32-vscaleextexp.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7356,7 +7360,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vscaleextexp-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vscaleextexp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vscaleextexp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vscaleextexp-test f32-vscaleextexp-test)
 
   ADD_EXECUTABLE(f32-vsigmoid-test test/f32-vsigmoid.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7365,7 +7369,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsigmoid-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsigmoid-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsigmoid-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsigmoid-test f32-vsigmoid-test)
 
   ADD_EXECUTABLE(f32-vsqr-test test/f32-vsqr.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7374,7 +7378,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsqr-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsqr-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsqr-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsqr-test f32-vsqr-test)
 
   ADD_EXECUTABLE(f32-vsqrdiff-test test/f32-vsqrdiff.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7383,7 +7387,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsqrdiff-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsqrdiff-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsqrdiff-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsqrdiff-test f32-vsqrdiff-test)
 
   ADD_EXECUTABLE(f32-vsqrdiffc-test test/f32-vsqrdiffc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7392,7 +7396,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsqrdiffc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsqrdiffc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsqrdiffc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsqrdiffc-test f32-vsqrdiffc-test)
 
   ADD_EXECUTABLE(f32-vsqrt-test test/f32-vsqrt.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7401,7 +7405,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsqrt-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsqrt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsqrt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsqrt-test f32-vsqrt-test)
 
   ADD_EXECUTABLE(f32-vsub-test test/f32-vsub.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7410,7 +7414,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsub-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsub-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsub-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsub-test f32-vsub-test)
 
   ADD_EXECUTABLE(f32-vsub-minmax-test test/f32-vsub-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7419,7 +7423,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsub-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsub-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsub-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsub-minmax-test f32-vsub-minmax-test)
 
   ADD_EXECUTABLE(f32-vsub-relu-test test/f32-vsub-relu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7428,7 +7432,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsub-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsub-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsub-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsub-relu-test f32-vsub-relu-test)
 
   ADD_EXECUTABLE(f32-vsubc-test test/f32-vsubc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7437,7 +7441,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsubc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsubc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsubc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsubc-test f32-vsubc-test)
 
   ADD_EXECUTABLE(f32-vsubc-minmax-test test/f32-vsubc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7446,7 +7450,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsubc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsubc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsubc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsubc-minmax-test f32-vsubc-minmax-test)
 
   ADD_EXECUTABLE(f32-vsubc-relu-test test/f32-vsubc-relu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7455,7 +7459,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsubc-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vsubc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vsubc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vsubc-relu-test f32-vsubc-relu-test)
 
   ADD_EXECUTABLE(f32-vrsubc-test test/f32-vrsubc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7464,7 +7468,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrsubc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrsubc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrsubc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrsubc-test f32-vrsubc-test)
 
   ADD_EXECUTABLE(f32-vrsubc-minmax-test test/f32-vrsubc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7473,7 +7477,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrsubc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrsubc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrsubc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrsubc-minmax-test f32-vrsubc-minmax-test)
 
   ADD_EXECUTABLE(f32-vrsubc-relu-test test/f32-vrsubc-relu.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7482,7 +7486,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrsubc-relu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(f32-vrsubc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-vrsubc-relu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(f32-vrsubc-relu-test f32-vrsubc-relu-test)
 
   ADD_EXECUTABLE(qc8-dwconv-minmax-fp32-test test/qc8-dwconv-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7491,7 +7495,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qc8-dwconv-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qc8-dwconv-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qc8-dwconv-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qc8-dwconv-minmax-fp32-test qc8-dwconv-minmax-fp32-test)
 
   ADD_EXECUTABLE(qc8-gemm-minmax-fp32-test test/qc8-gemm-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7500,7 +7504,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qc8-gemm-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qc8-gemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main jit)
+  TARGET_LINK_LIBRARIES(qc8-gemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic jit)
   ADD_TEST(qc8-gemm-minmax-fp32-test qc8-gemm-minmax-fp32-test)
 
   ADD_EXECUTABLE(qc8-igemm-minmax-fp32-test test/qc8-igemm-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7509,7 +7513,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qc8-igemm-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qc8-igemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main jit)
+  TARGET_LINK_LIBRARIES(qc8-igemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic jit)
   ADD_TEST(qc8-igemm-minmax-fp32-test qc8-igemm-minmax-fp32-test)
 
   ADD_EXECUTABLE(qs8-dwconv-minmax-fp32-test test/qs8-dwconv-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7518,7 +7522,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-dwconv-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-dwconv-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-dwconv-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-dwconv-minmax-fp32-test qs8-dwconv-minmax-fp32-test)
 
   ADD_EXECUTABLE(qs8-dwconv-minmax-rndnu-test test/qs8-dwconv-minmax-rndnu.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7527,7 +7531,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-dwconv-minmax-rndnu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-dwconv-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-dwconv-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-dwconv-minmax-rndnu-test qs8-dwconv-minmax-rndnu-test)
 
   ADD_EXECUTABLE(qs8-f32-vcvt-test test/f32-f16-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7536,7 +7540,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-f32-vcvt-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-f32-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-f32-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-f32-vcvt-test qs8-f32-vcvt-test)
 
   ADD_EXECUTABLE(qs8-gavgpool-minmax-test test/qs8-gavgpool-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7545,7 +7549,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-gavgpool-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-gavgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-gavgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-gavgpool-test qs8-gavgpool-minmax-test)
 
   ADD_EXECUTABLE(qs8-gemm-minmax-fp32-test test/qs8-gemm-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7554,7 +7558,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-gemm-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-gemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-gemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-gemm-minmax-fp32-test qs8-gemm-minmax-fp32-test)
 
   ADD_EXECUTABLE(qs8-gemm-minmax-rndnu-test test/qs8-gemm-minmax-rndnu.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7563,7 +7567,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-gemm-minmax-rndnu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-gemm-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main jit)
+  TARGET_LINK_LIBRARIES(qs8-gemm-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic jit)
   ADD_TEST(qs8-gemm-minmax-rndnu-test qs8-gemm-minmax-rndnu-test)
 
   ADD_EXECUTABLE(qs8-igemm-minmax-fp32-test test/qs8-igemm-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7572,7 +7576,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-igemm-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-igemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-igemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-igemm-minmax-fp32-test qs8-igemm-minmax-fp32-test)
 
   ADD_EXECUTABLE(qs8-igemm-minmax-rndnu-test test/qs8-igemm-minmax-rndnu.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7581,7 +7585,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-igemm-minmax-rndnu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-igemm-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main jit)
+  TARGET_LINK_LIBRARIES(qs8-igemm-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic jit)
   ADD_TEST(qs8-igemm-minmax-rndnu-test qs8-igemm-minmax-rndnu-test)
 
   ADD_EXECUTABLE(qs8-requantization-test test/qs8-requantization.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7590,7 +7594,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-requantization-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-requantization-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-requantization-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-requantization-test qs8-requantization-test)
 
   ADD_EXECUTABLE(qs8-vadd-minmax-test test/qs8-vadd-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7599,7 +7603,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-vadd-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-vadd-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-vadd-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-vadd-minmax-test qs8-vadd-minmax-test)
 
   ADD_EXECUTABLE(qs8-vaddc-minmax-test test/qs8-vaddc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7608,7 +7612,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-vaddc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-vaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-vaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-vaddc-minmax-test qs8-vaddc-minmax-test)
 
   ADD_EXECUTABLE(qs8-vmul-minmax-fp32-test test/qs8-vmul-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7617,7 +7621,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-vmul-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-vmul-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-vmul-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-vmul-minmax-fp32-test qs8-vmul-minmax-fp32-test)
 
   ADD_EXECUTABLE(qs8-vmulc-minmax-fp32-test test/qs8-vmulc-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7626,7 +7630,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-vmulc-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qs8-vmulc-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qs8-vmulc-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qs8-vmulc-minmax-fp32-test qs8-vmulc-minmax-fp32-test)
 
   ADD_EXECUTABLE(qu8-avgpool-minmax-test test/qu8-avgpool-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7635,7 +7639,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-avgpool-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-avgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-avgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-avgpool-minmax-test qu8-avgpool-minmax-test)
 
   ADD_EXECUTABLE(qu8-dwconv-minmax-fp32-test test/qu8-dwconv-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7644,7 +7648,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-dwconv-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-dwconv-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-dwconv-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-dwconv-minmax-fp32-test qu8-dwconv-minmax-fp32-test)
 
   ADD_EXECUTABLE(qu8-dwconv-minmax-rndnu-test test/qu8-dwconv-minmax-rndnu.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7653,7 +7657,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-dwconv-minmax-rndnu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-dwconv-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-dwconv-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-dwconv-minmax-rndnu-test qu8-dwconv-minmax-rndnu-test)
 
   ADD_EXECUTABLE(qu8-f32-vcvt-test test/f32-f16-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7662,7 +7666,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-f32-vcvt-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-f32-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-f32-vcvt-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-f32-vcvt-test qu8-f32-vcvt-test)
 
   ADD_EXECUTABLE(qu8-gavgpool-minmax-test test/qu8-gavgpool-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7671,7 +7675,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-gavgpool-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-gavgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-gavgpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-gavgpool-test qu8-gavgpool-minmax-test)
 
   ADD_EXECUTABLE(qu8-gemm-minmax-fp32-test test/qu8-gemm-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7680,7 +7684,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-gemm-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-gemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-gemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-gemm-minmax-fp32-test qu8-gemm-minmax-fp32-test)
 
   ADD_EXECUTABLE(qu8-gemm-minmax-rndnu-test test/qu8-gemm-minmax-rndnu.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7689,7 +7693,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-gemm-minmax-rndnu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-gemm-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-gemm-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-gemm-minmax-rndnu-test qu8-gemm-minmax-rndnu-test)
 
   ADD_EXECUTABLE(qu8-igemm-minmax-fp32-test test/qu8-igemm-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7698,7 +7702,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-igemm-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-igemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-igemm-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-igemm-minmax-fp32-test qu8-igemm-minmax-fp32-test)
 
   ADD_EXECUTABLE(qu8-igemm-minmax-rndnu-test test/qu8-igemm-minmax-rndnu.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
@@ -7707,7 +7711,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-igemm-minmax-rndnu-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-igemm-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-igemm-minmax-rndnu-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-igemm-minmax-rndnu-test qu8-igemm-minmax-rndnu-test)
 
   ADD_EXECUTABLE(qu8-requantization-test test/qu8-requantization.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7716,7 +7720,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-requantization-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-requantization-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-requantization-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-requantization-test qu8-requantization-test)
 
   ADD_EXECUTABLE(qu8-vadd-minmax-test test/qu8-vadd-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7725,7 +7729,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-vadd-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-vadd-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-vadd-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-vadd-minmax-test qu8-vadd-minmax-test)
 
   ADD_EXECUTABLE(qu8-vaddc-minmax-test test/qu8-vaddc-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7734,7 +7738,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-vaddc-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-vaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-vaddc-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-vaddc-minmax-test qu8-vaddc-minmax-test)
 
   ADD_EXECUTABLE(qu8-vmul-minmax-fp32-test test/qu8-vmul-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7743,7 +7747,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-vmul-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-vmul-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-vmul-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-vmul-minmax-fp32-test qu8-vmul-minmax-fp32-test)
 
   ADD_EXECUTABLE(qu8-vmulc-minmax-fp32-test test/qu8-vmulc-minmax-fp32.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7752,7 +7756,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-vmulc-minmax-fp32-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(qu8-vmulc-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(qu8-vmulc-minmax-fp32-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(qu8-vmulc-minmax-fp32-test qu8-vmulc-minmax-fp32-test)
 
   ADD_EXECUTABLE(s8-ibilinear-test test/s8-ibilinear.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7761,7 +7765,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(s8-ibilinear-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(s8-ibilinear-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(s8-ibilinear-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(s8-ibilinear-test s8-ibilinear-test)
 
   ADD_EXECUTABLE(s8-maxpool-minmax-test test/s8-maxpool-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7770,7 +7774,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(s8-maxpool-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(s8-maxpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(s8-maxpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(s8-maxpool-minmax-test s8-maxpool-minmax-test)
 
   ADD_EXECUTABLE(s8-vclamp-test test/s8-vclamp.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7779,7 +7783,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(s8-vclamp-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(s8-vclamp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(s8-vclamp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(s8-vclamp-test s8-vclamp-test)
 
   ADD_EXECUTABLE(u8-lut32norm-test test/u8-lut32norm.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7788,7 +7792,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(u8-lut32norm-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(u8-lut32norm-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(u8-lut32norm-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(u8-lut32norm-test u8-lut32norm-test)
 
   ADD_EXECUTABLE(u8-ibilinear-test test/u8-ibilinear.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7797,7 +7801,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(u8-ibilinear-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(u8-ibilinear-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(u8-ibilinear-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(u8-ibilinear-test u8-ibilinear-test)
 
   ADD_EXECUTABLE(u8-maxpool-minmax-test test/u8-maxpool-minmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7806,7 +7810,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(u8-maxpool-minmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(u8-maxpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(u8-maxpool-minmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(u8-maxpool-minmax-test u8-maxpool-minmax-test)
 
   ADD_EXECUTABLE(u8-rmax-test test/u8-rmax.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7815,7 +7819,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(u8-rmax-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(u8-rmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(u8-rmax-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(u8-rmax-test u8-rmax-test)
 
   ADD_EXECUTABLE(u8-vclamp-test test/u8-vclamp.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7824,7 +7828,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(u8-vclamp-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(u8-vclamp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(u8-vclamp-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(u8-vclamp-test u8-vclamp-test)
 
   ADD_EXECUTABLE(x16-transpose-test test/x16-transpose.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7833,7 +7837,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x16-transpose-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(x16-transpose-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(x16-transpose-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(x16-transpose-test x16-transpose-test)
 
   ADD_EXECUTABLE(x32-packx-test test/x32-packx.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7842,7 +7846,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x32-packx-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(x32-packx-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(x32-packx-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(x32-packx-test x32-packx-test)
 
   ADD_EXECUTABLE(x32-unpool-test test/x32-unpool.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7851,7 +7855,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x32-unpool-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(x32-unpool-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(x32-unpool-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(x32-unpool-test x32-unpool-test)
 
   ADD_EXECUTABLE(x32-depthtospace2d-chw2hwc-test test/x32-depthtospace2d-chw2hwc.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7860,7 +7864,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x32-depthtospace2d-chw2hwc-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(x32-depthtospace2d-chw2hwc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(x32-depthtospace2d-chw2hwc-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(x32-depthtospace2d-chw2hwc-test x32-depthtospace2d-chw2hwc-test)
 
   ADD_EXECUTABLE(x32-transpose-test test/x32-transpose.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7869,7 +7873,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x32-transpose-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(x32-transpose-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(x32-transpose-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(x32-transpose-test x32-transpose-test)
 
   ADD_EXECUTABLE(x32-zip-test test/x32-zip.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7878,7 +7882,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x32-zip-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(x32-zip-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(x32-zip-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(x32-zip-test x32-zip-test)
 
   ADD_EXECUTABLE(x8-lut-test test/x8-lut.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7887,7 +7891,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x8-lut-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(x8-lut-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(x8-lut-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(x8-lut-test x8-lut-test)
 
   ADD_EXECUTABLE(x8-zip-test test/x8-zip.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7896,7 +7900,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x8-zip-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(x8-zip-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(x8-zip-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(x8-zip-test x8-zip-test)
 
   ADD_EXECUTABLE(xx-fill-test test/xx-fill.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7905,7 +7909,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(xx-fill-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(xx-fill-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(xx-fill-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(xx-fill-test xx-fill-test)
 
   ADD_EXECUTABLE(xx-pad-test test/xx-pad.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -7914,7 +7918,7 @@ IF(XNNPACK_BUILD_TESTS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(xx-pad-test PRIVATE include src test)
-  TARGET_LINK_LIBRARIES(xx-pad-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(xx-pad-test PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
   ADD_TEST(xx-pad-test xx-pad-test)
 
   ADD_EXECUTABLE(aarch32-assembler-test test/aarch32-assembler.cc $<TARGET_OBJECTS:jit>)
@@ -7951,7 +7955,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-exp-ulp-eval PRIVATE . src)
-  TARGET_LINK_LIBRARIES(f32-exp-ulp-eval PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-exp-ulp-eval PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-expminus-ulp-eval eval/f32-expminus-ulp.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-expminus-ulp-eval PROPERTIES
@@ -7959,7 +7963,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-expminus-ulp-eval PRIVATE . src)
-  TARGET_LINK_LIBRARIES(f32-expminus-ulp-eval PRIVATE XNNPACK benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-expminus-ulp-eval PRIVATE XNNPACK benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-expm1minus-ulp-eval eval/f32-expm1minus-ulp.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-expm1minus-ulp-eval PROPERTIES
@@ -7967,7 +7971,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-expm1minus-ulp-eval PRIVATE . src)
-  TARGET_LINK_LIBRARIES(f32-expm1minus-ulp-eval PRIVATE XNNPACK benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-expm1minus-ulp-eval PRIVATE XNNPACK benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-extexp-ulp-eval eval/f32-extexp-ulp.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-extexp-ulp-eval PROPERTIES
@@ -7975,7 +7979,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-extexp-ulp-eval PRIVATE . src)
-  TARGET_LINK_LIBRARIES(f32-extexp-ulp-eval PRIVATE XNNPACK benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-extexp-ulp-eval PRIVATE XNNPACK benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-sigmoid-ulp-eval eval/f32-sigmoid-ulp.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-sigmoid-ulp-eval PROPERTIES
@@ -7983,7 +7987,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-sigmoid-ulp-eval PRIVATE . src)
-  TARGET_LINK_LIBRARIES(f32-sigmoid-ulp-eval PRIVATE XNNPACK benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-sigmoid-ulp-eval PRIVATE XNNPACK benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-sqrt-ulp-eval eval/f32-sqrt-ulp.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-sqrt-ulp-eval PROPERTIES
@@ -7991,7 +7995,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-sqrt-ulp-eval PRIVATE . src)
-  TARGET_LINK_LIBRARIES(f32-sqrt-ulp-eval PRIVATE XNNPACK benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-sqrt-ulp-eval PRIVATE XNNPACK benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   # ---[ Build accuracy tests
   ADD_EXECUTABLE(f16-f32-cvt-eval eval/f16-f32-cvt.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -8000,7 +8004,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f16-f32-cvt-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f16-f32-cvt-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f16-f32-cvt-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   ADD_EXECUTABLE(f32-f16-cvt-eval eval/f32-f16-cvt.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-f16-cvt-eval PROPERTIES
@@ -8008,7 +8012,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-f16-cvt-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f32-f16-cvt-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-f16-cvt-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   ADD_EXECUTABLE(f32-qs8-cvt-eval eval/f32-qs8-cvt.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-qs8-cvt-eval PROPERTIES
@@ -8016,7 +8020,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-qs8-cvt-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f32-qs8-cvt-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-qs8-cvt-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   ADD_EXECUTABLE(f32-qu8-cvt-eval eval/f32-qu8-cvt.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-qu8-cvt-eval PROPERTIES
@@ -8024,7 +8028,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-qu8-cvt-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f32-qu8-cvt-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-qu8-cvt-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   ADD_EXECUTABLE(f32-exp-eval eval/f32-exp.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-exp-eval PROPERTIES
@@ -8032,7 +8036,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-exp-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f32-exp-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-exp-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   ADD_EXECUTABLE(f32-expm1minus-eval eval/f32-expm1minus.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-expm1minus-eval PROPERTIES
@@ -8040,7 +8044,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-expm1minus-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f32-expm1minus-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-expm1minus-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   ADD_EXECUTABLE(f32-expminus-eval eval/f32-expminus.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-expminus-eval PROPERTIES
@@ -8048,7 +8052,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-expminus-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f32-expminus-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-expminus-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   ADD_EXECUTABLE(f32-roundne-eval eval/f32-roundne.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-roundne-eval PROPERTIES
@@ -8056,7 +8060,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-roundne-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f32-roundne-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-roundne-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   ADD_EXECUTABLE(f32-roundd-eval eval/f32-roundd.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-roundd-eval PROPERTIES
@@ -8064,7 +8068,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-roundd-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f32-roundd-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-roundd-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   ADD_EXECUTABLE(f32-roundu-eval eval/f32-roundu.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-roundu-eval PROPERTIES
@@ -8072,7 +8076,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-roundu-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f32-roundu-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-roundu-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   ADD_EXECUTABLE(f32-roundz-eval eval/f32-roundz.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-roundz-eval PROPERTIES
@@ -8080,7 +8084,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-roundz-eval PRIVATE include src)
-  TARGET_LINK_LIBRARIES(f32-roundz-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main)
+  TARGET_LINK_LIBRARIES(f32-roundz-eval PRIVATE cpuinfo fp16 pthreadpool gtest gtest_main gpic)
 
   # ---[ Build end-to-end microbenchmarks
   ADD_LIBRARY(bench-models STATIC
@@ -8123,7 +8127,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(f32-dwconv-e2e-bench PRIVATE . src)
-  TARGET_LINK_LIBRARIES(f32-dwconv-e2e-bench PRIVATE XNNPACK benchmark bench-models bench-utils)
+  TARGET_LINK_LIBRARIES(f32-dwconv-e2e-bench PRIVATE XNNPACK benchmark bench-models bench-utils gpic)
 
   ADD_EXECUTABLE(f32-gemm-e2e-bench bench/f32-gemm-e2e.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-gemm-e2e-bench PROPERTIES
@@ -8131,7 +8135,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-gemm-e2e-bench PRIVATE . src)
-  TARGET_LINK_LIBRARIES(f32-gemm-e2e-bench PRIVATE XNNPACK fp16 benchmark bench-models bench-utils)
+  TARGET_LINK_LIBRARIES(f32-gemm-e2e-bench PRIVATE XNNPACK fp16 benchmark bench-models bench-utils gpic)
 
   ADD_EXECUTABLE(qs8-dwconv-e2e-bench bench/qs8-dwconv-e2e.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qs8-dwconv-e2e-bench PROPERTIES
@@ -8139,7 +8143,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-dwconv-e2e-bench PRIVATE . src)
-  TARGET_LINK_LIBRARIES(qs8-dwconv-e2e-bench PRIVATE XNNPACK fp16 benchmark bench-models bench-utils)
+  TARGET_LINK_LIBRARIES(qs8-dwconv-e2e-bench PRIVATE XNNPACK fp16 benchmark bench-models bench-utils gpic)
 
   ADD_EXECUTABLE(qs8-gemm-e2e-bench bench/qs8-gemm-e2e.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qs8-gemm-e2e-bench PROPERTIES
@@ -8147,7 +8151,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-gemm-e2e-bench PRIVATE . src)
-  TARGET_LINK_LIBRARIES(qs8-gemm-e2e-bench PRIVATE XNNPACK fp16 benchmark bench-models bench-utils)
+  TARGET_LINK_LIBRARIES(qs8-gemm-e2e-bench PRIVATE XNNPACK fp16 benchmark bench-models bench-utils gpic)
 
   ADD_EXECUTABLE(qu8-gemm-e2e-bench bench/qu8-gemm-e2e.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qu8-gemm-e2e-bench PROPERTIES
@@ -8155,7 +8159,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-gemm-e2e-bench PRIVATE . src)
-  TARGET_LINK_LIBRARIES(qu8-gemm-e2e-bench PRIVATE XNNPACK fp16 benchmark bench-models bench-utils)
+  TARGET_LINK_LIBRARIES(qu8-gemm-e2e-bench PRIVATE XNNPACK fp16 benchmark bench-models bench-utils gpic)
 
   ADD_EXECUTABLE(qu8-dwconv-e2e-bench bench/qu8-dwconv-e2e.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qu8-dwconv-e2e-bench PROPERTIES
@@ -8163,7 +8167,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-dwconv-e2e-bench PRIVATE . src)
-  TARGET_LINK_LIBRARIES(qu8-dwconv-e2e-bench PRIVATE XNNPACK fp16 benchmark bench-models bench-utils)
+  TARGET_LINK_LIBRARIES(qu8-dwconv-e2e-bench PRIVATE XNNPACK fp16 benchmark bench-models bench-utils gpic)
 
   # ---[ Build operator-level microbenchmarks
   ADD_EXECUTABLE(abs-bench bench/abs.cc $<TARGET_OBJECTS:all_microkernels>)
@@ -8172,7 +8176,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(abs-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(abs-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(abs-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(average-pooling-bench bench/average-pooling.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(average-pooling-bench PROPERTIES
@@ -8180,7 +8184,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(average-pooling-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(average-pooling-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(average-pooling-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(bankers-rounding-bench bench/bankers-rounding.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(bankers-rounding-bench PROPERTIES
@@ -8188,7 +8192,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(bankers-rounding-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(bankers-rounding-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(bankers-rounding-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(ceiling-bench bench/ceiling.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(ceiling-bench PROPERTIES
@@ -8196,7 +8200,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(ceiling-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(ceiling-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(ceiling-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(channel-shuffle-bench bench/channel-shuffle.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(channel-shuffle-bench PROPERTIES
@@ -8204,7 +8208,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(channel-shuffle-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(channel-shuffle-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(channel-shuffle-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(convert-bench bench/convert.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(convert-bench PROPERTIES
@@ -8212,7 +8216,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(convert-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(convert-bench PRIVATE XNNPACK fp16 benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(convert-bench PRIVATE XNNPACK fp16 benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(convolution-bench bench/convolution.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(convolution-bench PROPERTIES
@@ -8220,7 +8224,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(convolution-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(convolution-bench PRIVATE XNNPACK fp16 benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(convolution-bench PRIVATE XNNPACK fp16 benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(deconvolution-bench bench/deconvolution.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(deconvolution-bench PROPERTIES
@@ -8228,7 +8232,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(deconvolution-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(deconvolution-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(deconvolution-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(elu-bench bench/elu.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(elu-bench PROPERTIES
@@ -8236,7 +8240,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(elu-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(elu-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(elu-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(floor-bench bench/floor.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(floor-bench PROPERTIES
@@ -8244,7 +8248,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(floor-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(floor-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(floor-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(global-average-pooling-bench bench/global-average-pooling.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(global-average-pooling-bench PROPERTIES
@@ -8252,7 +8256,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(global-average-pooling-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(global-average-pooling-bench PRIVATE XNNPACK fp16 benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(global-average-pooling-bench PRIVATE XNNPACK fp16 benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(hardswish-bench bench/hardswish.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(hardswish-bench PROPERTIES
@@ -8260,7 +8264,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(hardswish-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(hardswish-bench PRIVATE XNNPACK fp16 benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(hardswish-bench PRIVATE XNNPACK fp16 benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(leaky-relu-bench bench/leaky-relu.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(leaky-relu-bench PROPERTIES
@@ -8268,7 +8272,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(leaky-relu-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(leaky-relu-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(leaky-relu-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(max-pooling-bench bench/max-pooling.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(max-pooling-bench PROPERTIES
@@ -8276,7 +8280,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(max-pooling-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(max-pooling-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(max-pooling-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(negate-bench bench/negate.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(negate-bench PROPERTIES
@@ -8284,7 +8288,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(negate-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(negate-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(negate-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(prelu-bench bench/prelu.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(prelu-bench PROPERTIES
@@ -8292,7 +8296,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(prelu-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(prelu-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(prelu-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(sigmoid-bench bench/sigmoid.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(sigmoid-bench PROPERTIES
@@ -8300,7 +8304,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(sigmoid-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(sigmoid-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(sigmoid-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(softmax-bench bench/softmax.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(softmax-bench PROPERTIES
@@ -8308,7 +8312,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(softmax-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(softmax-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(softmax-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(square-bench bench/square.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(square-bench PROPERTIES
@@ -8316,7 +8320,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(square-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(square-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(square-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(square-root-bench bench/square-root.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(square-root-bench PROPERTIES
@@ -8324,7 +8328,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(square-root-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(square-root-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(square-root-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   ADD_EXECUTABLE(truncation-bench bench/truncation.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(truncation-bench PROPERTIES
@@ -8332,7 +8336,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
   TARGET_INCLUDE_DIRECTORIES(truncation-bench PRIVATE .)
-  TARGET_LINK_LIBRARIES(truncation-bench PRIVATE XNNPACK benchmark bench-utils)
+  TARGET_LINK_LIBRARIES(truncation-bench PRIVATE XNNPACK benchmark bench-utils gpic)
 
   # ---[ Build microkernel-level microbenchmarks
   ADD_EXECUTABLE(f16-dwconv-bench bench/f16-dwconv.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:indirection> $<TARGET_OBJECTS:packing>)
@@ -8341,7 +8345,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-dwconv-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f16-dwconv-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f16-dwconv-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f16-gemm-bench bench/f16-gemm.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:indirection> $<TARGET_OBJECTS:packing>)
   SET_TARGET_PROPERTIES(f16-gemm-bench PROPERTIES
@@ -8349,7 +8353,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-gemm-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f16-gemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f16-gemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f16-igemm-bench bench/f16-igemm.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:indirection> $<TARGET_OBJECTS:packing>)
   SET_TARGET_PROPERTIES(f16-igemm-bench PROPERTIES
@@ -8357,7 +8361,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-igemm-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f16-igemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f16-igemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f16-f32-vcvt-bench bench/f16-f32-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f16-f32-vcvt-bench PROPERTIES
@@ -8365,7 +8369,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f16-f32-vcvt-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f16-f32-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f16-f32-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-conv-hwc-bench bench/f32-conv-hwc.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
   SET_TARGET_PROPERTIES(f32-conv-hwc-bench PROPERTIES
@@ -8373,7 +8377,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-conv-hwc-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-conv-hwc-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-conv-hwc-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-dwconv-bench bench/f32-dwconv.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:indirection> $<TARGET_OBJECTS:packing>)
   SET_TARGET_PROPERTIES(f32-dwconv-bench PROPERTIES
@@ -8381,7 +8385,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-dwconv-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-dwconv-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-dwconv-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-dwconv2d-chw-bench bench/f32-dwconv2d-chw.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-dwconv2d-chw-bench PROPERTIES
@@ -8389,7 +8393,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-dwconv2d-chw-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-dwconv2d-chw-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-dwconv2d-chw-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-f16-vcvt-bench bench/f32-f16-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-f16-vcvt-bench PROPERTIES
@@ -8397,7 +8401,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-f16-vcvt-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-f16-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-f16-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-gemm-bench bench/f32-gemm.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
   SET_TARGET_PROPERTIES(f32-gemm-bench PROPERTIES
@@ -8405,7 +8409,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-gemm-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-gemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-gemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-igemm-bench bench/f32-igemm.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:indirection> $<TARGET_OBJECTS:packing>)
   SET_TARGET_PROPERTIES(f32-igemm-bench PROPERTIES
@@ -8413,7 +8417,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-igemm-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-igemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-igemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-im2col-gemm-bench bench/f32-im2col-gemm.cc src/im2col.c $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
   SET_TARGET_PROPERTIES(f32-im2col-gemm-bench PROPERTIES
@@ -8424,7 +8428,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-im2col-gemm-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-im2col-gemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-im2col-gemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-qs8-vcvt-bench bench/f32-qs8-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-qs8-vcvt-bench PROPERTIES
@@ -8432,7 +8436,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-qs8-vcvt-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-qs8-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-qs8-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-qu8-vcvt-bench bench/f32-qu8-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-qu8-vcvt-bench PROPERTIES
@@ -8440,7 +8444,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-qu8-vcvt-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-qu8-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-qu8-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-rmax-bench bench/f32-rmax.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-rmax-bench PROPERTIES
@@ -8448,7 +8452,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-rmax-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-rmax-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-rmax-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-spmm-bench bench/f32-spmm.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-spmm-bench PROPERTIES
@@ -8456,7 +8460,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-spmm-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-spmm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-spmm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-softmax-bench bench/f32-softmax.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-softmax-bench PROPERTIES
@@ -8464,7 +8468,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-softmax-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-softmax-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-softmax-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-velu-bench bench/f32-velu.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-velu-bench PROPERTIES
@@ -8472,7 +8476,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-velu-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-velu-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-velu-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-vhswish-bench bench/f32-vhswish.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-vhswish-bench PROPERTIES
@@ -8480,7 +8484,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vhswish-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-vhswish-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-vhswish-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-vlrelu-bench bench/f32-vlrelu.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-vlrelu-bench PROPERTIES
@@ -8488,7 +8492,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vlrelu-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-vlrelu-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-vlrelu-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-vrelu-bench bench/f32-vrelu.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-vrelu-bench PROPERTIES
@@ -8496,7 +8500,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vrelu-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-vrelu-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-vrelu-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-vsigmoid-bench bench/f32-vsigmoid.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-vsigmoid-bench PROPERTIES
@@ -8504,7 +8508,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsigmoid-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-vsigmoid-bench PRIVATE benchmark bench-utils fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-vsigmoid-bench PRIVATE benchmark bench-utils fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(f32-vsqrt-bench bench/f32-vsqrt.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(f32-vsqrt-bench PROPERTIES
@@ -8512,7 +8516,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(f32-vsqrt-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(f32-vsqrt-bench PRIVATE benchmark bench-utils fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(f32-vsqrt-bench PRIVATE benchmark bench-utils fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qs8-dwconv-bench bench/qs8-dwconv.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:indirection> $<TARGET_OBJECTS:packing>)
   SET_TARGET_PROPERTIES(qs8-dwconv-bench PROPERTIES
@@ -8520,7 +8524,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-dwconv-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qs8-dwconv-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qs8-dwconv-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qs8-f32-vcvt-bench bench/qs8-f32-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qs8-f32-vcvt-bench PROPERTIES
@@ -8528,7 +8532,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-f32-vcvt-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qs8-f32-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qs8-f32-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qs8-gemm-bench bench/qs8-gemm.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
   SET_TARGET_PROPERTIES(qs8-gemm-bench PROPERTIES
@@ -8536,7 +8540,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-gemm-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qs8-gemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qs8-gemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qs8-requantization-bench bench/qs8-requantization.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qs8-requantization-bench PROPERTIES
@@ -8544,7 +8548,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-requantization-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qs8-requantization-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qs8-requantization-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qs8-vadd-bench bench/qs8-vadd.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qs8-vadd-bench PROPERTIES
@@ -8552,7 +8556,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-vadd-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qs8-vadd-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qs8-vadd-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qs8-vaddc-bench bench/qs8-vaddc.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qs8-vaddc-bench PROPERTIES
@@ -8560,7 +8564,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-vaddc-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qs8-vaddc-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qs8-vaddc-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qs8-vmul-bench bench/qs8-vmul.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qs8-vmul-bench PROPERTIES
@@ -8568,7 +8572,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-vmul-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qs8-vmul-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qs8-vmul-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qs8-vmulc-bench bench/qs8-vmulc.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qs8-vmulc-bench PROPERTIES
@@ -8576,7 +8580,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qs8-vmulc-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qs8-vmulc-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qs8-vmulc-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qu8-f32-vcvt-bench bench/qu8-f32-vcvt.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qu8-f32-vcvt-bench PROPERTIES
@@ -8584,7 +8588,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-f32-vcvt-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qu8-f32-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qu8-f32-vcvt-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qu8-gemm-bench bench/qu8-gemm.cc $<TARGET_OBJECTS:all_microkernels> $<TARGET_OBJECTS:packing>)
   SET_TARGET_PROPERTIES(qu8-gemm-bench PROPERTIES
@@ -8592,7 +8596,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-gemm-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qu8-gemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qu8-gemm-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qu8-requantization-bench bench/qu8-requantization.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qu8-requantization-bench PROPERTIES
@@ -8600,7 +8604,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-requantization-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qu8-requantization-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qu8-requantization-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qu8-vadd-bench bench/qu8-vadd.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qu8-vadd-bench PROPERTIES
@@ -8608,7 +8612,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-vadd-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qu8-vadd-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qu8-vadd-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qu8-vaddc-bench bench/qu8-vaddc.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qu8-vaddc-bench PROPERTIES
@@ -8616,7 +8620,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-vaddc-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qu8-vaddc-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qu8-vaddc-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qu8-vmul-bench bench/qu8-vmul.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qu8-vmul-bench PROPERTIES
@@ -8624,7 +8628,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-vmul-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qu8-vmul-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qu8-vmul-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(qu8-vmulc-bench bench/qu8-vmulc.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(qu8-vmulc-bench PROPERTIES
@@ -8632,7 +8636,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(qu8-vmulc-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(qu8-vmulc-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(qu8-vmulc-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(rounding-bench bench/rounding.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(rounding-bench PROPERTIES
@@ -8640,7 +8644,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(rounding-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(rounding-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(rounding-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(x8-lut-bench bench/x8-lut.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(x8-lut-bench PROPERTIES
@@ -8648,7 +8652,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x8-lut-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(x8-lut-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(x8-lut-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(x16-transpose-bench bench/x16-transpose.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(x16-transpose-bench PROPERTIES
@@ -8656,7 +8660,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x16-transpose-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(x16-transpose-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(x16-transpose-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 
   ADD_EXECUTABLE(x32-transpose-bench bench/x32-transpose.cc $<TARGET_OBJECTS:all_microkernels>)
   SET_TARGET_PROPERTIES(x32-transpose-bench PROPERTIES
@@ -8664,5 +8668,5 @@ IF(XNNPACK_BUILD_BENCHMARKS)
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS YES)
   TARGET_INCLUDE_DIRECTORIES(x32-transpose-bench PRIVATE . include src)
-  TARGET_LINK_LIBRARIES(x32-transpose-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool)
+  TARGET_LINK_LIBRARIES(x32-transpose-bench PRIVATE benchmark bench-utils cpuinfo fp16 pthreadpool gpic)
 ENDIF()
