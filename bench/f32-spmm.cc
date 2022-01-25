@@ -57,6 +57,8 @@ static void SpMMBenchmark(benchmark::State& state,
     benchmark::utils::DivideRoundUp<size_t>(benchmark::utils::GetMaxCacheSize(),
       sizeof(float) * (w_elements + c_elements) + sizeof(uint32_t) * (dmap_elements + nmap_elements));
 
+  printf("mc %d nc %d kc %d iteration_count %d num_buffers %d\n", (int)mc, (int)nc, (int)kc, (int) state.max_iterations, (int)num_buffers);
+
   // Micro-kernel can access one element beyond w and dmap for software pipelining.
   w.reserve(num_buffers * w_elements + 1);
   dmap.reserve(num_buffers * dmap_elements + 1);
