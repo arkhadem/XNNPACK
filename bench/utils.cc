@@ -59,14 +59,14 @@ uint32_t PrefetchToL1(const void* ptr, size_t size) {
   const uint8_t* u8_ptr = static_cast<const uint8_t*>(ptr);
   // Compute and return sum of data to prevent compiler from removing data reads.
   uint32_t sum = 0;
-  std::cout << "load " << (void const*)u8_ptr;
+  // std::cout << "load " << (void const*)u8_ptr;
   while (size >= step) {
     sum += uint32_t(*u8_ptr);
     u8_ptr += step;
     size -= step;
   }
   u8_ptr -= step;
-  std::cout << " " << (void const*)u8_ptr << std::endl;
+  // std::cout << " " << (void const*)u8_ptr << std::endl;
   return sum;
 }
 

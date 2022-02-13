@@ -142,17 +142,19 @@ static void SpMMBenchmark(benchmark::State& state,
     // - W, Kmap, and Nmap is not in cache (for any cache level)
     // - C is not in cache (for any cache level)
     state.PauseTiming();
-    benchmark::utils::PrefetchToL1(a.data(), a.size() * sizeof(float));
+    // benchmark::utils::PrefetchToL1(a.data(), a.size() * sizeof(float));
     buffer_index = (buffer_index + 1) % num_buffers;
     state.ResumeTiming();
 
-    spmm(mc * sizeof(float), nc,
-      a.data() + a_offsets[buffer_index],
-      w.data() + buffer_index * w_elements,
-      dmap.data() + buffer_index * dmap_elements,
-      nmap.data() + buffer_index * nmap_elements,
-      c.data() + buffer_index * c_elements, mc * sizeof(float),
-      &params);
+    if (state.kernel_exe) {
+      spmm(mc * sizeof(float), nc,
+        a.data() + a_offsets[buffer_index],
+        w.data() + buffer_index * w_elements,
+        dmap.data() + buffer_index * dmap_elements,
+        nmap.data() + buffer_index * nmap_elements,
+        c.data() + buffer_index * c_elements, mc * sizeof(float),
+        &params);
+      }
   }
 
   const uint64_t cpu_frequency = benchmark::utils::GetCurrentCpuFrequency();
@@ -223,7 +225,7 @@ static void SpMMBenchmark(benchmark::State& state,
 
   BENCHMARK_SPMM(spmm80_4x1__neon)
   BENCHMARK_SPMM(spmm80_4x1__neon_pipelined)
-  BENCHMARK_SPMM(spmm80_4x1__neon_x2)
+  BENCHMARK_SPMM(spmm80_4x1__neon_x2) 
   BENCHMARK_SPMM(spmm80_8x1__neon)
   BENCHMARK_SPMM(spmm80_8x1__neon_pipelined)
   BENCHMARK_SPMM(spmm80_8x1__neon_x2)
@@ -374,14 +376,14 @@ static void SpMMBenchmark(benchmark::State& state,
   // BENCHMARK_SPMM(spmm80_4x1__sse)
   // BENCHMARK_SPMM(spmm80_8x1__sse)
   // BENCHMARK_SPMM(spmm80_16x1__sse)
-  // BENCHMARK_SPMM(spmm80_32x1__sse)
+  BENCHMARK_SPMM(spmm80_32x1__sse)
 #endif  // XNN_ARCH_X86 || XNN_ARCH_X86_64
 
 #if XNN_ARCH_GPIC
   static void spmm80_256x1__sse(benchmark::State& state, const char* net) {
     SpMMBenchmark(state, xnn_f32_spmm_minmax_ukernel_256x1__gpic, 256, 1, 0.8f);
   }
-  BENCHMARK_SPMM(spmm80_256x1__sse)
+  // BENCHMARK_SPMM(spmm80_256x1__sse)
 #endif
 
 static void spmm80_1x1__scalar(benchmark::State& state, const char* net) {
